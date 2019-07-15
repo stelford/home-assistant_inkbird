@@ -1,0 +1,8 @@
+{
+  "domain": "inkbird",
+  "name": "Inkbird Temp/Humidity Sensor",
+  "documentation": "https://github.com/stelford/home-assistant_inkbid",
+  "dependencies": [],
+  "codeowners": ["@stelford"],
+  "requirements": ["bluepy==1.3.0"]
+}
