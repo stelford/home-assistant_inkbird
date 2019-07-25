@@ -23,7 +23,7 @@ changed MAC inside it.
 
 There are a few caveats, of course;
 
-1) I have not tested with multiple sensors yet
+1) ~~I have not tested with multiple sensors yet~~ Tested fine :)
 2) the sensor itself has a pretty nasty 'drop off' signal, at
    around 25 feet (in my experience). Bluetooth is not meant
    for long range
