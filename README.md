@@ -1,5 +1,7 @@
 This repo adds support for the Inkbird IBS-TH1 under Home Assistant.
 
+![Example Output inside Home Assistant](room-temps.png)
+
 Install this by dropping it into your config folder (path may vary
 from install to install). In my install, this would be at
 /config/custom_components/inkbird. 
