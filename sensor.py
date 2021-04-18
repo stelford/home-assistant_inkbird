@@ -176,27 +176,27 @@ class InkbirdUpdater(Entity):
                         battery = int(value[14:16], 16)
                         _LOGGER.debug(f" --> {temperature} - {humidity} - {battery} ")
 ##
-                    old_state = self.hass.states.get(f"sensor.{device.entity_name}")
-                    if old_state:
-                        attrs = old_state.attributes
-                    else:
-                        attrs = None
+                        old_state = self.hass.states.get(f"sensor.{device.entity_name}")
+                        if old_state:
+                            attrs = old_state.attributes
+                        else:
+                            attrs = None
 
-                    if device.parameter == "temperature":
-                        _LOGGER.debug(f" >>>> updating device {device.mac} with {temperature}")
-                        device.temperature = temperature
-                        device._state = temperature
-                        #self.hass.states.set(f"sensor.{device.entity_name}", temperature, attrs)
-                    elif device.parameter == "humidity":
-                        _LOGGER.debug(f" >>>> updating device {device.mac} with {humidity}")
-                        device.humidity = humidity
-                        device._state = humidity
-                        #self.hass.states.set(f"sensor.{device.entity_name}", humidity, attrs)
-                    else:
-                        _LOGGER.debug(f" >>>> updating device {device.mac} with {battery}")
-                        device.battery = battery
-                        device._state = battery
-                        #self.hass.states.set(f"sensor.{device.entity_name}", battery, attrs)
+                        if device.parameter == "temperature":
+                            _LOGGER.debug(f" >>>> updating device {device.mac} with {temperature}")
+                            device.temperature = temperature
+                            device._state = temperature
+                            #self.hass.states.set(f"sensor.{device.entity_name}", temperature, attrs)
+                        elif device.parameter == "humidity":
+                            _LOGGER.debug(f" >>>> updating device {device.mac} with {humidity}")
+                            device.humidity = humidity
+                            device._state = humidity
+                             #self.hass.states.set(f"sensor.{device.entity_name}", humidity, attrs)
+                       else:
+                            _LOGGER.debug(f" >>>> updating device {device.mac} with {battery}")
+                            device.battery = battery
+                            device._state = battery
+                            #self.hass.states.set(f"sensor.{device.entity_name}", battery, attrs)
 
 
 
