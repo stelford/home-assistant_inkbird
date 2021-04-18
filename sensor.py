@@ -152,8 +152,17 @@ class InkbirdUpdater(Entity):
         return True
 
     def handleDiscovery(self, dev):
-        _LOGGER.debug(f"Discovered device {dev.addr}")
-        _LOGGER.debug("Device {} ({}), RSSI={} dB".format(dev.addr, dev.addrType, dev.rssi))
+#        _LOGGER.debug(f"Discovered device {dev.addr}")
+        _LOGGER.debug("Discovered device {} ({}), RSSI={} dB".format(dev.addr, dev.addrType, dev.rssi))
+#1
+                _LOGGER.debug(self.inkbird_devices)
+                for device in self.inkbird_devices:
+                    _LOGGER.debug(f" dev addr is {dev.addr} and mac is {device.mac}")
+#                    _LOGGER.debug(f" --> {temperature} - {humidity} - {battery} ")
+                    if dev.addr == device.mac:
+                        _LOGGER.debug(f" dev addr is {dev.addr} and mac is {device.mac} with parameter of {device.parameter}")
+
+#1 can move this for loop to after finding dev match to only do calc if matched?
         for (adtype, desc, value) in dev.getScanData():
             _LOGGER.debug("[%s]  %s = %s" % (adtype, desc, value))
             if adtype == 255:
@@ -165,12 +174,8 @@ class InkbirdUpdater(Entity):
                     temperature -= 1 << temperature_bits
                 temperature = "%2.2f" % (temperature / 100)
                 battery = int(value[14:16], 16)
-                _LOGGER.debug(self.inkbird_devices)
-                for device in self.inkbird_devices:
-                    _LOGGER.debug(f" dev addr is {dev.addr} and mac is {device.mac}")
-                    _LOGGER.debug(f" --> {temperature} - {humidity} - {battery} ")
-                    if dev.addr == device.mac:
-                        _LOGGER.debug(f" dev addr is {dev.addr} and mac is {device.mac} with parameter of {device.parameter}")
+##
+
                         old_state = self.hass.states.get(f"sensor.{device.entity_name}")
                         if old_state:
                             attrs = old_state.attributes
