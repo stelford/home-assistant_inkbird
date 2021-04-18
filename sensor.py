@@ -117,8 +117,8 @@ class InkbirdUpdater(Entity):
 
     def update(self):
         """Get the latest data and use it to update our sensor state."""
-#        _LOGGER.debug("UPDATE called")
-        _LOGGER.debug(f"UPDATE called: scanner here is {self.scanner}")
+        _LOGGER.debug("UPDATE called")
+        _LOGGER.debug(f"scanner here is {self.scanner}")
 
         # The btle on my raspberry pi 4 seems to go MIA
         if self.no_results_counter >= 5:
@@ -154,51 +154,52 @@ class InkbirdUpdater(Entity):
     def handleDiscovery(self, dev):
 #        _LOGGER.debug(f"Discovered device {dev.addr}")
         _LOGGER.debug("Discovered device {} ({}), RSSI={} dB".format(dev.addr, dev.addrType, dev.rssi))
-#1
-        _LOGGER.debug(self.inkbird_devices)
-        for device in self.inkbird_devices:
-            _LOGGER.debug(f" dev addr is {dev.addr} and mac is {device.mac}")
-#           _LOGGER.debug(f" --> {temperature} - {humidity} - {battery} ")
-            if dev.addr == device.mac:
-                _LOGGER.debug(f" MATCH! with parameter of {device.parameter}")
-
-#1 can move this for loop to after finding dev match to only do calc if matched?
-                for (adtype, desc, value) in dev.getScanData():
-                    _LOGGER.debug("[%s]  %s = %s" % (adtype, desc, value))
-                    if adtype == 255:
-                        humidity = "%2.2f" % (int(value[6:8]+value[4:6], 16)/100)
-                        #temperature = "%2.2f" % (int(value[2:4]+value[:2], 16)/100)
-                        temperature = int(value[2:4]+value[:2], 16)
-                        temperature_bits = 16
-                        if temperature & (1 << (temperature_bits-1)):
-                            temperature -= 1 << temperature_bits
-                        temperature = "%2.2f" % (temperature / 100)
-                        battery = int(value[14:16], 16)
-                        _LOGGER.debug(f" --> {temperature} - {humidity} - {battery} ")
+        for (adtype, desc, value) in dev.getScanData():
+            _LOGGER.debug("[%s]  %s = %s" % (adtype, desc, value))
+# MAC_hack to only calculate on these card-coded MAC devices: update values for your devices
+            if dev.addr == "54:4a:16:5a:20:25" or dev.addr == "49:42:06:00:15:3b":
+                _LOGGER.debug(f"{dev.addr} matches manually coded MAC!")
 ##
-                        old_state = self.hass.states.get(f"sensor.{device.entity_name}")
-                        if old_state:
-                            attrs = old_state.attributes
-                        else:
-                            attrs = None
+                if adtype == 255:
+                    humidity = "%2.2f" % (int(value[6:8]+value[4:6], 16)/100)
+                    #temperature = "%2.2f" % (int(value[2:4]+value[:2], 16)/100)
+                    temperature = int(value[2:4]+value[:2], 16)
+                    temperature_bits = 16
+                    if temperature & (1 << (temperature_bits-1)):
+                        temperature -= 1 << temperature_bits
+                    temperature = "%2.2f" % (temperature / 100)
+                    battery = int(value[14:16], 16)
+                    _LOGGER.debug(self.inkbird_devices)
+                    for device in self.inkbird_devices:
+                        _LOGGER.debug(f" dev addr is {dev.addr} and mac is {device.mac}")
+    #                    _LOGGER.debug(f" --> {temperature} - {humidity} - {battery} ")
+                        if dev.addr == device.mac:
+                            _LOGGER.debug(f" dev addr is {dev.addr} and mac is {device.mac} with parameter of {device.parameter}")
+                            old_state = self.hass.states.get(f"sensor.{device.entity_name}")
+                            if old_state:
+                                attrs = old_state.attributes
+                            else:
+                                attrs = None
 
-                        if device.parameter == "temperature":
-                            _LOGGER.debug(f" >>>> updating device {device.mac} with {temperature}")
-                            device.temperature = temperature
-                            device._state = temperature
-                            #self.hass.states.set(f"sensor.{device.entity_name}", temperature, attrs)
-                        elif device.parameter == "humidity":
-                            _LOGGER.debug(f" >>>> updating device {device.mac} with {humidity}")
-                            device.humidity = humidity
-                            device._state = humidity
-                            #self.hass.states.set(f"sensor.{device.entity_name}", humidity, attrs)
-                        else:
-                            _LOGGER.debug(f" >>>> updating device {device.mac} with {battery}")
-                            device.battery = battery
-                            device._state = battery
-                            #self.hass.states.set(f"sensor.{device.entity_name}", battery, attrs)
-
-
+                            if device.parameter == "temperature":
+                                _LOGGER.debug(f" >>>> updating device {device.mac} with {temperature}")
+                                device.temperature = temperature
+                                device._state = temperature
+                                #self.hass.states.set(f"sensor.{device.entity_name}", temperature, attrs)
+                            elif device.parameter == "humidity":
+                                _LOGGER.debug(f" >>>> updating device {device.mac} with {humidity}")
+                                device.humidity = humidity
+                                device._state = humidity
+                                #self.hass.states.set(f"sensor.{device.entity_name}", humidity, attrs)
+                            else:
+                                _LOGGER.debug(f" >>>> updating device {device.mac} with {battery}")
+                                device.battery = battery
+                                device._state = battery
+                                #self.hass.states.set(f"sensor.{device.entity_name}", battery, attrs)
+# Part of MAC_hack
+#            else:
+#                _LOGGER.debug(f"{dev.addr} does not match manually coded MAC!!")
+##
 
 class InkbirdThermalSensor(Entity):
     """Representation of a Inkbird Sensor."""
