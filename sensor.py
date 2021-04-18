@@ -117,8 +117,8 @@ class InkbirdUpdater(Entity):
 
     def update(self):
         """Get the latest data and use it to update our sensor state."""
-        _LOGGER.debug("UPDATE called")
-        _LOGGER.debug(f"scanner here is {self.scanner}")
+#        _LOGGER.debug("UPDATE called")
+        _LOGGER.debug(f"UPDATE called: scanner here is {self.scanner}")
 
         # The btle on my raspberry pi 4 seems to go MIA
         if self.no_results_counter >= 5:
@@ -191,8 +191,8 @@ class InkbirdUpdater(Entity):
                             _LOGGER.debug(f" >>>> updating device {device.mac} with {humidity}")
                             device.humidity = humidity
                             device._state = humidity
-                             #self.hass.states.set(f"sensor.{device.entity_name}", humidity, attrs)
-                       else:
+                            #self.hass.states.set(f"sensor.{device.entity_name}", humidity, attrs)
+                        else:
                             _LOGGER.debug(f" >>>> updating device {device.mac} with {battery}")
                             device.battery = battery
                             device._state = battery
