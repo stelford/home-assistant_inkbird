@@ -132,8 +132,8 @@ class InkbirdUpdater(Entity):
         self.scanner.register_detection_callback(self.handleDiscovery)
         await self.scanner.start()
     
-    async def async_will_remove_from_hass():
-        await self.scanner.stop()
+    async def async_will_remove_from_hass(self):
+        await self.scanner.stop(self)
 	
     def update(self):
         """Get the latest data and use it to update our sensor state."""
