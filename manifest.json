@@ -3,5 +3,6 @@
   "name": "Inkbird Temp/Humidity Sensor",
   "documentation": "https://github.com/stelford/home-assistant_inkbid",
   "dependencies": [],
+  "codeowners": ["@stelford"],
   "requirements": ["bleak==0.13.0"]
 }
