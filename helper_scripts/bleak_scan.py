@@ -6,13 +6,12 @@ from struct import unpack
 import time
 
 
-def printInkbird(dev:BLEDevice,stuff):
-#    print(dev)
+def printInkbird(dev:BLEDevice,advdata:AdvertisementData):
     if (dev.name == "sps"):
+        print(dev)
 
-        data = dev.metadata['manufacturer_data']
-        temperature,others = data.popitem()
-    
+        data = advdata.manufacturer_data
+        temperature,others = data.popitem()     
 
         temperature_bits = 16
         if temperature & (1 << (temperature_bits-1)):

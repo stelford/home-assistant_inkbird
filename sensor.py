@@ -146,10 +146,10 @@ class InkbirdUpdater(Entity):
         self._state = []
         return True
 
-    def handleDiscovery(self, dev:BLEDevice, stuff:AdvertisementData):
+    def handleDiscovery(self, dev:BLEDevice, advdata:AdvertisementData):
         if (dev.name == "sps"):
             _LOGGER.debug(f"Discovered device {dev}")            
-            temperature,others = dev.metadata['manufacturer_data'].popitem()
+            temperature,others = advdata.manufacturer_data.popitem()
         
             temperature_bits = 16
             if temperature & (1 << (temperature_bits-1)):
