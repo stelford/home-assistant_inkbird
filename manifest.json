@@ -4,5 +4,6 @@
   "documentation": "https://github.com/stelford/home-assistant_inkbid",
   "dependencies": [],
   "codeowners": ["@stelford"],
-  "requirements": ["bleak==0.13.0"]
+  "requirements": ["bleak==0.13.0"],
+  "version": "0.2.0"
 }
