@@ -213,7 +213,17 @@ class InkbirdThermalSensor(Entity):
     @property
     def unique_id(self):
         """use MAC as the unique ID"""
-        return self._mac
+        return self._mac + "-" + self.parameter
+
+    @property
+    def device_info(self):
+        """use MAC as the unique ID for the device"""
+        return {
+            "identifiers": {
+               (DOMAIN, self.mac)
+            },
+            "name": self.name
+        } 
 
     @property
     def name(self):
@@ -271,7 +281,17 @@ class InkbirdHumiditySensor(Entity):
     @property
     def unique_id(self):
         """use MAC as the unique ID"""
-        return self._mac
+        return self.mac + "-" + self.parameter
+
+    @property
+    def device_info(self):
+        """use MAC as the unique ID for the device"""
+        return {
+            "identifiers": {
+               (DOMAIN, self.mac)
+            },
+            "name": self.name
+        } 
 
     @property
     def name(self):
@@ -324,7 +344,17 @@ class InkbirdBatterySensor(Entity):
     @property
     def unique_id(self):
         """use MAC as the unique ID"""
-        return self._mac
+        return self._mac + "-" + self.parameter
+
+    @property
+    def device_info(self):
+        """use MAC as the unique ID for the device"""
+        return {
+            "identifiers": {
+               (DOMAIN, self.mac)
+            },
+            "name": self.name
+        } 
 
     @property
     def name(self):
