@@ -2,6 +2,7 @@ import asyncio
 from bleak import discover
 from bleak import BleakScanner
 from bleak.backends.device import BLEDevice
+from bleak.backends.scanner import AdvertisementData
 from struct import unpack
 import time
 
